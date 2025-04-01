@@ -1871,3 +1871,910 @@ const [msg, setMsg] = useState("");
 
 ---
 
+তাহলে চল! 😊  
+আজ আমরা শিখবো **Week 2 – Day 6: Conditional Rendering & List Rendering in React**  
+👉 React এ কিভাবে "যদি এই হয় তাহলে এটা দেখাও, না হলে ওটা" — এই টাইপ কাজ করা হয়, এবং কিভাবে লিস্ট (array) থেকে অনেকগুলো component দেখানো হয়।
+
+---
+
+# 🔷 Day 6: Conditional Rendering + List Rendering
+
+---
+
+## ✅ Part 1: **Conditional Rendering** – শর্তসাপেক্ষে কিছু দেখানো
+
+> তুমি চাইছো: user logged in থাকলে তার নাম দেখাও, না থাকলে “Please log in” দেখাও।
+
+---
+
+### 📦 উদাহরণ ১: Simple if...else এর মতো
+
+```jsx
+function Welcome({ isLoggedIn }) {
+  if (isLoggedIn) {
+    return <h2>Welcome back!</h2>;
+  } else {
+    return <h2>Please log in.</h2>;
+  }
+}
+```
+
+---
+
+### 📦 উদাহরণ ২: Inline ternary operator
+
+```jsx
+function Greet({ user }) {
+  return (
+    <h2>
+      {user ? `Hello, ${user}` : "Guest, please log in"}
+    </h2>
+  );
+}
+```
+
+🧠 **ব্যাখ্যা:**  
+- `user ?` → যদি user থাকে  
+- `: "..."` → না থাকলে এইটা
+
+---
+
+### 📦 উদাহরণ ৩: Show/hide based on condition
+
+```jsx
+function Message({ show }) {
+  return (
+    <div>
+      {show && <p>This message is visible!</p>}
+    </div>
+  );
+}
+```
+
+👉 `show && <p>` → show true হলে paragraph দেখাবে।
+
+---
+
+## ✅ Part 2: **List Rendering** – Array থেকে অনেক Component দেখানো
+
+ধরো তোমার কাছে ইউজারদের একটা list আছে:
+
+```jsx
+const users = ["Hamid", "Sadia", "Nusrat"];
+```
+
+### 📦 `map()` দিয়ে Component তৈরি করো:
+
+```jsx
+function UserList() {
+  const users = ["Hamid", "Sadia", "Nusrat"];
+
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>👤 {user}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+👉 **ব্যাখ্যা:** `map()` দিয়ে প্রতিটা নাম `<li>` আকারে দেখানো হয়েছে  
+👉 `key={index}` → React কে সাহায্য করে element track রাখতে
+
+---
+
+### 📦 Object Array থেকে list দেখানো:
+
+```jsx
+const students = [
+  { id: 1, name: "Hamid", mark: 80 },
+  { id: 2, name: "Sadia", mark: 75 },
+];
+
+function StudentList() {
+  return (
+    <div>
+      {students.map((s) => (
+        <p key={s.id}>{s.name} - {s.mark} marks</p>
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+## 🛠️ প্র্যাকটিস করো:
+
+1. ইউজার login থাকলে Welcome দেখাও, না থাকলে Login button দেখাও  
+2. একটি নামের লিস্ট নিয়ে map() করে সব নাম দেখাও  
+3. ৫টি প্রোডাক্ট এর নাম, দাম দিয়ে list দেখাও (object array)
+
+---
+
+## ❓ কুইজ:
+
+```jsx
+const items = ["Pen", "Book"];
+return (
+  <ul>
+    {items.map(item => <li>{item}</li>)}
+  </ul>
+);
+```
+
+👉 এই কোডে কী দেখাবে?
+
+---
+
+## ✅ আজকের শেখা:
+
+| টপিক               | ব্যাখ্যা                           |
+|--------------------|------------------------------------|
+| Conditional Rendering | যদি কোনো শর্ত সত্য হয় তবে কিছু দেখাও |
+| `? :`               | inline শর্ত ব্যবহারে |
+| List Rendering      | `map()` দিয়ে অনেক Component দেখানো |
+| `key`               | প্রতিটি item এর unique identity |
+
+---
+
+### 🔜 আগামী টপিক:
+**Day 7 – React Project: Profile Card + Button Toggle (JSX, Props, useState, Conditional)**  
+এই পর্যন্ত শেখা জিনিস দিয়ে একটা মিনি প্রজেক্ট তৈরি করবো!
+
+তুমি কি চাও আমি এখনই প্রজেক্ট শুরু করি? 😄📦
+
+---
+
+চমৎকার! 😎  
+আজ আমরা করবো **Week 2 – Day 7: Mini React Project – Profile Card + Button Toggle**  
+এই প্রজেক্টে আমরা একসাথে ব্যবহার করবো:  
+✅ JSX, ✅ Props, ✅ useState, ✅ Conditional Rendering, ✅ List Rendering — সব কিছু!  
+
+---
+
+# 🧩 Day 7: React Mini Project – Profile Card App
+
+---
+
+## 🎯 প্রজেক্ট: ইউজারের প্রোফাইল কার্ড লিস্ট দেখানো  
++ show/hide বাটনের মাধ্যমে কার্ডগুলো টগল করা যাবে।
+
+---
+
+### ✅ Step 1: Dummy User Data (Array of objects)
+
+```jsx
+const users = [
+  {
+    id: 1,
+    name: "Hamid",
+    age: 25,
+    profession: "Developer"
+  },
+  {
+    id: 2,
+    name: "Sadia",
+    age: 22,
+    profession: "Designer"
+  },
+  {
+    id: 3,
+    name: "Nusrat",
+    age: 24,
+    profession: "Marketer"
+  }
+];
+```
+
+---
+
+### ✅ Step 2: ProfileCard Component (Reusable)
+
+```jsx
+function ProfileCard({ name, age, profession }) {
+  return (
+    <div style={{ border: "1px solid #ccc", padding: "10px", margin: "10px" }}>
+      <h3>{name}</h3>
+      <p>Age: {age}</p>
+      <p>Profession: {profession}</p>
+    </div>
+  );
+}
+```
+
+---
+
+### ✅ Step 3: Main App Component
+
+```jsx
+import React, { useState } from 'react';
+
+function App() {
+  const [show, setShow] = useState(true);
+
+  const users = [
+    { id: 1, name: "Hamid", age: 25, profession: "Developer" },
+    { id: 2, name: "Sadia", age: 22, profession: "Designer" },
+    { id: 3, name: "Nusrat", age: 24, profession: "Marketer" },
+  ];
+
+  return (
+    <div>
+      <h2>👥 User Profile Cards</h2>
+      <button onClick={() => setShow(!show)}>
+        {show ? "Hide Profiles" : "Show Profiles"}
+      </button>
+
+      {show && (
+        <div>
+          {users.map(user => (
+            <ProfileCard 
+              key={user.id}
+              name={user.name}
+              age={user.age}
+              profession={user.profession}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+## 💡 এখানে যা ব্যবহার করলাম:
+
+| ফিচার | কাজ |
+|-------|-----|
+| `props` | ProfileCard এ data পাঠানো |
+| `map()` | user list থেকে একাধিক কার্ড বানানো |
+| `useState` | show/hide টগল কন্ট্রোল করা |
+| `Conditional Rendering` | show সত্য হলে কার্ড দেখানো |
+
+---
+
+### ✅ Output:
+```
+👥 User Profile Cards
+[Hide Profiles Button]
+
+📋 Hamid - Developer  
+📋 Sadia - Designer  
+📋 Nusrat - Marketer
+```
+
+---
+
+## 🛠️ চ্যালেঞ্জ (তুমি বাড়িতে করো):
+
+1. একটা Search Input দাও → নাম দিয়ে ইউজার ফিল্টার করো  
+2. পছন্দের ইউজার Card এ একটি ❤️ Like বাটন দাও  
+3. ProfileCard Component এ Image যোগ করো (placeholder বা avatar)
+
+---
+
+## ✅ আজকের শেখা:
+
+| কনসেপ্ট | রিয়েল প্রয়োগ |
+|----------|--------------|
+| Props    | Card এ data পাঠানো |
+| JSX      | UI তৈরি |
+| useState | show/hide কন্ট্রোল |
+| map      | list থেকে UI বানানো |
+| Conditional Rendering | টগল ফিচার |
+
+---
+
+### 🔚 Tomorrow:  
+**Day 8 – Week 2 Final Project Idea + Review**  
+(React এর সব শিখা একসাথে ব্যবহার করে বড় কিছু তৈরি করার প্রস্তুতি)
+
+তুমি কি Week 2 এর ফাইনাল রিভিউ এবং প্রজেক্ট আইডিয়া নিয়েও এগোতে চাও এখনই? 😄🔥
+
+---
+
+তুমি সত্যিই অসাধারণভাবে ধারাবাহিকতা ধরে রেখেছো! 🧠🔥  
+আজ আমরা করবো **Week 2 – Day 8: Final Review + Full React Mini Project Idea**  
+এটা তোমার জন্য একটা বড় recap হবে — আর আমরা সাজিয়ে দেবো একটা **React Mini Project** যা Week 2 এর সবকিছু একসাথে প্র্যাকটিস করাবে।
+
+---
+
+# 🧠 Day 8: Final Recap + Full React Project Idea
+
+---
+
+## 🔁 রিভিশন: Week 2 এ তুমি যা শিখেছো
+
+| দিন | শিখেছো |
+|-----|--------|
+| ✅ Day 1 | React intro, JSX, Functional Component |
+| ✅ Day 2 | Props দিয়ে data পাঠানো |
+| ✅ Day 3 | useState দিয়ে ডেটা রাখা ও আপডেট |
+| ✅ Day 4 | useEffect দিয়ে side effect চালানো |
+| ✅ Day 5 | Controlled Form (input handling) |
+| ✅ Day 6 | Conditional rendering + map() list rendering |
+| ✅ Day 7 | Profile Card Mini App with toggle |
+
+---
+
+## 🎯 Final Project Idea: **React Contact List App**
+
+> এটা একধরনের "Digital Phone Book" — যেখানে ইউজারদের নাম, ফোন নম্বর যোগ করা, দেখা, খোঁজা যাবে।
+
+---
+
+## ✅ Feature List:
+
+1. **Add Contact** – ফর্ম দিয়ে নাম ও ফোন নম্বর ইনপুট  
+2. **Show All Contacts** – map() করে কার্ড আকারে দেখানো  
+3. **Toggle Show/Hide List** – বাটন দিয়ে কন্ট্রোল  
+4. **Search Contact by Name** – live input দিয়ে filter  
+5. ✅ Bonus: like button, delete button
+
+---
+
+## 🛠️ Structure:
+
+```jsx
+<App />
+  ├── <ContactForm />     ← নাম, নম্বর ইনপুট
+  ├── <SearchBox />       ← ফিল্টার করার ইনপুট
+  └── <ContactList />     ← সব কন্টাক্টের কার্ড
+        └── <ContactCard /> ← প্রতিটি ইউজারের তথ্য
+```
+
+---
+
+## 🔧 Core Concepts You'll Use:
+
+| কনসেপ্ট | প্রয়োগ |
+|---------|--------|
+| `useState` | contacts add, search, show/hide |
+| `props` | data পাঠানো child components-এ |
+| `map()` | list দেখানো |
+| `filter()` | search logic |
+| `conditional rendering` | show/hide, message |
+
+---
+
+## 📌 Example Output:
+
+```
+📱 My Contacts
+[Search by name: ________ ]
+
+👤 Sadia | 📞 017...
+👤 Hamid | 📞 018...
+[Add New Contact]
+```
+
+---
+
+## ✅ তুমি চাইলে আমি এই Full Project এর Step-by-Step কোড + গাইড দিয়ে দিতে পারি  
+👉 এটা Week 3 এ গিয়ে করতে পারো বা এখনই চাইলে শুরু করতে পারো।
+
+তুমি কি চাও আমি Contact List Project এর full plan & code শুরু করে দিই? 😄📲  
+নাকি Week 3 (Next.js Start) তে যাই?
+
+---
+
+দারুণ! 🎉  
+তাহলে আমরা এখন করবো তোমার চাহিদামতো **React Full Project – Contact List App**  
+এই প্রজেক্টে আমরা একসাথে ব্যবহার করবো:
+
+✅ `useState`  
+✅ `props`  
+✅ Controlled Form  
+✅ List Rendering  
+✅ Search Filter  
+✅ Conditional Rendering  
+
+---
+
+# 🟢 Project: **React Contact List App** (Full Code with Comments)
+
+---
+
+### ✅ Step 1: `App.js`
+
+```jsx
+import React, { useState } from "react";
+import ContactForm from "./ContactForm";
+import ContactCard from "./ContactCard";
+import SearchBox from "./SearchBox";
+
+function App() {
+  const [contacts, setContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showList, setShowList] = useState(true);
+
+  const handleAddContact = (contact) => {
+    setContacts([...contacts, contact]);
+  };
+
+  const filteredContacts = contacts.filter(c =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
+      <h2>📱 My Contacts</h2>
+
+      <button onClick={() => setShowList(!showList)}>
+        {showList ? "Hide Contacts" : "Show Contacts"}
+      </button>
+
+      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <ContactForm onAdd={handleAddContact} />
+
+      {showList && (
+        <div>
+          {filteredContacts.length === 0 ? (
+            <p>No contacts found.</p>
+          ) : (
+            filteredContacts.map((contact, index) => (
+              <ContactCard key={index} name={contact.name} phone={contact.phone} />
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+
+---
+
+### ✅ Step 2: `ContactForm.js`
+
+```jsx
+import React, { useState } from "react";
+
+function ContactForm({ onAdd }) {
+  const [form, setForm] = useState({ name: "", phone: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (form.name.trim() && form.phone.trim()) {
+      onAdd(form);
+      setForm({ name: "", phone: "" });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
+      <input
+        name="name"
+        placeholder="Name"
+        value={form.name}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="phone"
+        placeholder="Phone"
+        value={form.phone}
+        onChange={handleChange}
+        required
+      />
+      <button type="submit">Add Contact</button>
+    </form>
+  );
+}
+
+export default ContactForm;
+```
+
+---
+
+### ✅ Step 3: `ContactCard.js`
+
+```jsx
+import React from "react";
+
+function ContactCard({ name, phone }) {
+  return (
+    <div style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
+      <h3>{name}</h3>
+      <p>📞 {phone}</p>
+    </div>
+  );
+}
+
+export default ContactCard;
+```
+
+---
+
+### ✅ Step 4: `SearchBox.js`
+
+```jsx
+import React from "react";
+
+function SearchBox({ searchTerm, setSearchTerm }) {
+  return (
+    <input
+      type="text"
+      placeholder="Search by name"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      style={{ margin: "15px 0", width: "100%" }}
+    />
+  );
+}
+
+export default SearchBox;
+```
+
+---
+
+## ✅ ফোল্ডার স্ট্রাকচার সাজাও এভাবে:
+```
+📁 src/
+├── App.js
+├── ContactForm.js
+├── ContactCard.js
+└── SearchBox.js
+```
+
+---
+
+## 🧠 তুমি এখন কী শিখলে এই প্রজেক্ট থেকে:
+
+| ফিচার | প্রয়োগ |
+|-------|--------|
+| `useState` | data রাখার জন্য (contacts, searchTerm, showList) |
+| `props` | form → App → card এ data পাঠানো |
+| `map()` | list দেখানো |
+| `filter()` | খোঁজা |
+| Form Handling | controlled input |
+| Conditional Rendering | Show/hide, no result message |
+
+---
+
+✅ এখন তুমি চাইলে এই প্রজেক্টে ✅ delete button, ✅ localStorage (data save) ✅ validation message – এসব ফিচারও যোগ করতে পারো।
+
+---
+
+### 🔜 এখন তুমি একদম প্রস্তুত **Week 3: Next.js শেখা** শুরু করার জন্য!  
+তুমি চাইলে আমি এখনই **Week 3 – Day 1: Next.js Intro + Page Routing** দিয়ে শুরু করতে পারি।
+
+**তাই বলো — Next.js নিয়ে যাত্রা শুরু করবো? 😄🚀**
+
+---
+
+অসাধারণ! 🎉 তুমি সফলভাবে React-এর ভিত্তি তৈরি করে ফেলেছো।  
+এখন আমরা শুরু করবো **Fullstack Web Development with Next.js – Week 3**  
+👉 আজ: **Day 1 – Next.js Introduction + File-based Routing System**
+
+---
+
+# 🟦 Week 3 – Day 1: Next.js Intro + Page Routing
+
+---
+
+## ✅ ১. Next.js কি?
+
+Next.js হলো React-এর উপর ভিত্তি করে বানানো একটি **Fullstack Framework**, যা দিয়ে তুমি:
+- Static ও Dynamic Page বানাতে পারো  
+- Server-side rendering (SSR) ও Static Site Generation (SSG) করতে পারো  
+- API Route ও Backend logic লিখতে পারো  
+- SEO-friendly ওয়েবসাইট খুব সহজে বানাতে পারো
+
+> 👉 Next.js = React + Routing + SSR + API + Optimization ✅
+
+---
+
+## ✅ ২. Next.js প্রজেক্ট শুরু করার নিয়ম:
+
+### 🔧 Step-by-Step:
+
+```bash
+npx create-next-app@latest my-next-app
+```
+
+👉 তারপর টাইপ করো:
+```bash
+cd my-next-app
+npm run dev
+```
+
+➡️ তোমার ব্রাউজারে চালাও:  
+**http://localhost:3000**
+
+---
+
+## ✅ ৩. ফোল্ডার স্ট্রাকচার:
+
+```
+📁 pages/         ← তোমার সব পেজ থাকবে এখানে
+📁 public/        ← image, asset file
+📁 styles/        ← CSS ফাইল
+📁 app/ (v13+)    ← App Router (নতুন ভার্সনে)
+```
+
+---
+
+## ✅ ৪. Page বানানো – File-Based Routing
+
+Next.js এ route বানাতে কোনো “React Router” লাগবে না।  
+তুমি শুধু ফাইল তৈরি করলেই route হয়ে যাবে!
+
+---
+
+### 📘 উদাহরণ ১: Home Page
+
+`pages/index.js`
+
+```jsx
+export default function Home() {
+  return <h1>🏠 Welcome to Home Page</h1>;
+}
+```
+
+➡️ URL: **http://localhost:3000**
+
+---
+
+### 📘 উদাহরণ ২: About Page
+
+`pages/about.js`
+
+```jsx
+export default function About() {
+  return <h1>About Us</h1>;
+}
+```
+
+➡️ URL: **http://localhost:3000/about**
+
+---
+
+### 📘 উদাহরণ ৩: Contact Page
+
+`pages/contact.js`
+
+```jsx
+export default function Contact() {
+  return <h1>Contact Us</h1>;
+}
+```
+
+➡️ URL: **http://localhost:3000/contact**
+
+---
+
+## ✅ ৫. Component বানিয়ে Import করো
+
+`components/Header.js`
+
+```jsx
+export default function Header() {
+  return <h2>This is the Header</h2>;
+}
+```
+
+`pages/index.js` এ ব্যবহার করো:
+
+```jsx
+import Header from '../components/Header';
+
+export default function Home() {
+  return (
+    <div>
+      <Header />
+      <p>Welcome to my site!</p>
+    </div>
+  );
+}
+```
+
+---
+
+## ✅ ৬. Link ব্যবহার – SPA Navigation
+
+Next.js এ `<a>` ট্যাগ না দিয়ে **`<Link />`** ব্যবহার করতে হয়:
+
+```jsx
+import Link from 'next/link';
+
+export default function Navbar() {
+  return (
+    <nav>
+      <Link href="/">Home</Link> |
+      <Link href="/about">About</Link> |
+      <Link href="/contact">Contact</Link>
+    </nav>
+  );
+}
+```
+
+👉 এটি SEO-friendly এবং fast navigation দেয়
+
+---
+
+## ✅ আজকের প্র্যাকটিস:
+
+1. Next.js App তৈরি করো  
+2. ৩টি পেজ বানাও – Home, About, Contact  
+3. Navbar component বানাও এবং `<Link>` দিয়ে রাউটিং করো  
+4. প্রতিটি পেজে আলাদা করে `<Header />` দেখাও
+
+---
+
+## ❓ কুইজ:
+
+```jsx
+// pages/blog.js
+
+export default function Blog() {
+  return <h1>My Blog</h1>;
+}
+```
+
+➡️ কোন URL এ এটা দেখা যাবে?
+
+---
+
+## ✅ আজকের শেখা:
+
+| টপিক | ব্যাখ্যা |
+|------|----------|
+| Next.js | React-এর ওপর বানানো Fullstack Framework |
+| File-based Routing | ফাইল বানালেই route হয়ে যায় |
+| Link Component | Page navigation করার উপায় |
+| Component Import | React Component এর মতোই |
+
+---
+
+### 🔜 আগামীকাল:
+**Day 2 – Dynamic Pages (Routing with Parameters), Nested Routing, Custom 404 Page**
+
+তুমি চাইলে আমি এখনই **Day 2** শুরু করে দিতে পারি।  
+তুমি কি প্রস্তুত Next.js এর Dynamic Routing শেখার জন্য? 😄📂
+
+---
+
+তাহলে চল! 😎  
+আজ আমরা করবো **Week 3 – Day 2: Dynamic Routing + Nested Routes + Custom 404 Page**  
+এই টপিকের মাধ্যমে তুমি বুঝবে কিভাবে Next.js এ dynamic URL তৈরি করা হয়—যেমন `/product/123` বা `/user/hamid`—একদমই React Router ছাড়াই!
+
+---
+
+# 🔷 Day 2: Dynamic Routes, Nested Routes, Custom 404
+
+---
+
+## ✅ ১. Dynamic Routing (URL-এর ভিতরের ডাটা ধরো)
+
+Next.js এ Dynamic Page বানানোর জন্য তুমি `[]` bracket ব্যবহার করো।
+
+---
+
+### 📘 উদাহরণ: `/blog/[id].js`
+
+`pages/blog/[id].js` ফাইল বানাও 👇
+
+```jsx
+import { useRouter } from 'next/router';
+
+export default function BlogPost() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return <h1>📝 Blog ID: {id}</h1>;
+}
+```
+
+👉 এখন তুমি গেলে `/blog/5` বা `/blog/hello` — সব কাজ করবে!
+
+---
+
+## 💡 ব্যাখ্যা:
+
+| Route             | Component Path         | Value of `id` |
+|------------------|------------------------|----------------|
+| `/blog/123`      | `pages/blog/[id].js`   | `"123"`        |
+| `/blog/react-js` | `pages/blog/[id].js`   | `"react-js"`   |
+
+---
+
+## ✅ ২. Nested Routes (ভেতরে ভেতরে page structure)
+
+Next.js এ folder বানিয়ে nested page বানানো যায়।
+
+---
+
+### 📘 উদাহরণ:
+
+```
+pages/
+ └── products/
+      ├── index.js          → /products
+      └── [productId].js    → /products/123
+```
+
+`products/index.js`:
+```jsx
+export default function ProductList() {
+  return <h2>📦 All Products</h2>;
+}
+```
+
+`products/[productId].js`:
+```jsx
+import { useRouter } from 'next/router';
+
+export default function ProductDetails() {
+  const { productId } = useRouter().query;
+
+  return <h2>Product ID: {productId}</h2>;
+}
+```
+
+---
+
+## ✅ ৩. Custom 404 Page
+
+`pages/404.js` ফাইল বানাও। যখন কোনো page পাওয়া যাবে না, তখন এটিই দেখাবে।
+
+```jsx
+export default function Custom404() {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '100px' }}>
+      <h1>😢 404 - Page Not Found</h1>
+      <p>The page you're looking for doesn't exist.</p>
+    </div>
+  );
+}
+```
+
+➡️ এখন যদি তুমি `/something-wrong` টাইপ route দেখো যা নেই, এটা show করবে।
+
+---
+
+## ✅ প্র্যাকটিস করো:
+
+1. `pages/blog/[id].js` বানাও এবং ID দেখাও  
+2. `pages/user/[username].js` বানাও — সেখানে ইউজারের নাম দেখাও  
+3. `products/` ফোল্ডারে nested dynamic route তৈরি করো  
+4. Custom 404 পেজ বানাও
+
+---
+
+## ❓ কুইজ:
+
+তুমি যদি ফাইল বানাও: `pages/user/[id].js`  
+👉 কোন URL এ এটা কাজ করবে?
+
+---
+
+## ✅ আজকের শেখা:
+
+| টপিক             | ব্যাখ্যা |
+|------------------|----------|
+| Dynamic Route     | [] দিয়ে variable route তৈরি |
+| Nested Routing    | ফোল্ডার দিয়ে ভেতরে পেজ বানানো |
+| useRouter         | URL থেকে ডেটা বের করার হুক |
+| Custom 404 Page   | নিজস্ব Not Found পেজ তৈরি |
+
+---
+
+### 🔜 আগামীকাল:
+**Day 3 – Static Site Generation (SSG) & Server-side Rendering (SSR)**  
+👉 তুমি শিখবে কখন কীভাবে page data build-এ আনবে, আর কখন server থেকে আনবে।
+
+তুমি কি Day 3 শুরু করতে চাও? 😄🧠
+
+---
+
